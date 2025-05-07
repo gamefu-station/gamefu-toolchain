@@ -1,6 +1,6 @@
 /// ======================================================================== ///
 /// This file is part of the GameFU Station fantasy console project.         ///
-///   FUASM - GameFU Station Assembler                                       ///
+///   FUASM - GameFU Station Toolchain                                       ///
 /// ------------------------------------------------------------------------ ///
 /// Copyright (C) 2025  L. C. Atticus <contact@nashiora.com>                 ///
 ///                                                                          ///
@@ -18,42 +18,20 @@
 /// along with this program.  If not, see <https://www.gnu.org/licenses/>.   ///
 /// ======================================================================== ///
 
-#ifndef FUASM_H_
-#define FUASM_H_
+#ifndef SHARED_H_
+#define SHARED_H_
 
-#include <gfubase/shared.h>
+#include <gfubase/gfubase.h>
+#include <gfuarch/gfuarch.h>
 
-typedef enum asm_expr_kind {
-} asm_expr_kind;
+typedef enum token_kind {
+#define TK(Id) TK_##Id,
+#include <tokens.h>
+    TK_COUNT,
+} token_kind;
 
-typedef struct asm_expr {
-    asm_expr_kind kind;
-} asm_expr;
+typedef struct token {
+    token_kind kind;
+} token;
 
-typedef struct asm_stmt {
-    token label;
-    token mnemonic;
-    gfu_string_view comment;
-} asm_stmt;
-
-typedef struct mips_file_header {
-    u8 magic[4];
-    u8 endianness;
-    u8 version;
-    u8 section_count;
-    u8 padding[1];
-} mips_file_header;
-
-typedef struct mips_section_header {
-    u8 segment;
-    u8 padding[3];
-    u32 offset;
-    u32 size;
-} mips_section_header;
-
-typedef struct gfuasm_context {
-    const char* input_file;
-    const char* output_file;
-} gfuasm_context;
-
-#endif /* FUASM_H_ */
+#endif /* SHARED_H_ */
